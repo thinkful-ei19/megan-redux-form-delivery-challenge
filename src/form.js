@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import {reduxForm, Field} from 'redux-form';
+import {required, notEmpty, fiveCharOnly, onlyNumbers} from './validators';
 
 export class Form extends Component {
   render() {
     return (
       <form
-        onSubmit={this.props.handleSubmit(values =>
+        onSubmit={this.props.handleSubmit(values =>{
           console.log(values)
-      )}
+          .catch(err=> console.log(err))
+        }
+          )
+        }
       >
         
           Tracking Number
@@ -19,7 +23,7 @@ export class Form extends Component {
             name="tracking-number"
             label="tracking-number"
             id="tracking-number"
-            // validate= {[required, notEmpty, fiveCharOnly, onlyNumbers]}
+            validate= {[required, notEmpty, fiveCharOnly, onlyNumbers]}
           />
         
 
