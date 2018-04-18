@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {reduxForm, Field, SubmissionError} from 'redux-form';
 import {required, notEmpty, fiveCharOnly, onlyNumbers} from './validators';
 import InputComponent from './input';
+import {reset} from 'redux-form';
 
 export class Form extends Component {
   
@@ -10,8 +11,7 @@ export class Form extends Component {
     return fetch(API_BASE_URL, {
       method:'POST',
       body: JSON.stringify(valuesFromForm),
-      headers: {'Content-Type': 'application/json'} 
-      //why do we need this/what does it do? ^ Mentor Notes
+      headers: {'Content-Type': 'application/json'}
     })
       .then(res => {
     //     if (!res.ok) {
@@ -30,15 +30,19 @@ export class Form extends Component {
     //             message: res.statusText
     //         });
     //     }
-        console.log(res)
+    //Explanation ^: if you are not getting a response that is ok, then something went wrong and we need to reject promise
+    //if you have something useful back (get the content type and the value of the header is in json)
+    //handle the error by taking the json and rejecting the promise with that error message to later be used in a catch block
+    //if not nice json, the code is equal to our http status code and our message will be something that has a little more info on what went wrong.
+    console.log(res)
         return;
     })
     //what exactly is this doing ^ Mentor Notes
         .then(()=> {
-          console.log('Submitted Values they are: ', valuesFromForm)
+          console.log('Submitted Values they are: ', valuesFromForm);
           setTimeout(()=>{
             document.getElementsByClassName(`message-success`)[0].innerHTML=``;
-            },4000)
+            },4000);
             //hacky code via Alex to make the success message dissapear after some time.
       })
         .catch(err=>{
@@ -52,6 +56,7 @@ export class Form extends Component {
           //           );
           //       }
           //What is the purpose of this^ when it's already displaying the validation error via the input component in input.js? Mentor Notes
+          //Also the message below never shows up anywhere...how do I make it show up? Mentor Notes
           return Promise.reject(
             new SubmissionError({
                 _error: 'Error Submitting Form'
@@ -65,7 +70,7 @@ export class Form extends Component {
 
   
   render() {
-
+    console.log(this.props.error)
     let successMessage;
     if(this.props.submitSucceeded === true){
       successMessage=
@@ -73,11 +78,11 @@ export class Form extends Component {
     }
 
 
-    let errorMessage;
-    if(this.props.error){
-      errorMessage = 
-      <div className="error-message">{this.props.error}</div>
-    }
+    // let errorMessage;
+    // if(this.props.error){
+    //   errorMessage = 
+    //   <div className="error-message">{this.props.error}</div>
+    // }
 
     return (
       <form
@@ -89,7 +94,7 @@ export class Form extends Component {
         }
       >
         {successMessage}
-        {errorMessage}
+        {/* {errorMessage} */}
         <label htmlFor="trackingNumber"> Tracking Number</label>
           <br/>
           <Field 
