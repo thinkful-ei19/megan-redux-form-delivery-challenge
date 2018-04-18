@@ -34,7 +34,13 @@ export class Form extends Component {
         return;
     })
     //what exactly is this doing ^ Mentor Notes
-        .then(()=> console.log('Submitted Values they are: ', valuesFromForm))
+        .then(()=> {
+          console.log('Submitted Values they are: ', valuesFromForm)
+          setTimeout(()=>{
+            document.getElementsByClassName(`message-success`)[0].innerHTML=``;
+            },4000)
+            //hacky code via Alex to make the success message dissapear after some time.
+      })
         .catch(err=>{
           // const {reason, message, location} = err;
           //       if (reason === 'ValidationError') {
@@ -63,7 +69,7 @@ export class Form extends Component {
     let successMessage;
     if(this.props.submitSucceeded === true){
       successMessage=
-      <div className="success-message">Report Submitted Successfully</div>
+      <div className="message-success">Report Submitted Successfully</div>
     }
 
 
