@@ -1,32 +1,62 @@
 import React, { Component } from 'react';
+import {reduxForm, Field} from 'redux-form';
 
-export default class Form extends Component {
+export class Form extends Component {
   render() {
     return (
-      <form>
-        <div>
-          <label for="tracking-num"> Tracking Number</label>
+      <form
+        onSubmit={this.props.handleSubmit(values =>
+          console.log(values)
+      )}
+      >
+        
+          Tracking Number
           <br />
-          <input type="text" />
-        </div>
+
+          <Field 
+            component="input"
+            element="input"
+            name="tracking-number"
+            label="tracking-number"
+            id="tracking-number"
+            // validate= {[required, notEmpty, fiveCharOnly, onlyNumbers]}
+          />
+        
 
         <div>
-        <label for="tracking-num"> What is your issue?</label>
+        What is your issue?
           <br/>
-          <select name="issue" id="issue">
-            <option value="not-arrived">My delivery hasn't arrived</option>
-            <option value="wrong-item">The wrong item was delivered</option>
-            <option value="part-missing">Part of my order is missing</option>
-            <option value="damaged">Some of my order arrived damaged</option>
-            <option value="other">Other(give details below)</option>
-          </select>
+
+          <Field 
+            component="select" 
+            element="select"
+            name="issue-description" 
+            id="issue"
+            label="issue"
+          >
+            <option></option>
+            <option name="not-arrived">My delivery hasn't arrived</option>
+            <option name="wrong-item">The wrong item was delivered</option>
+            <option name="part-missing">Part of my order is missing</option>
+            <option name="damaged">Some of my order arrived damaged</option>
+            <option name="other">Other(give details below)</option>
+          </Field>
+
         </div>
           
         <div>
-          <label for="tracking-num">Give more details (optional)</label>
+          Give more details (optional)
           <br />
-          <textarea name="details"></textarea>
+
+          <Field
+            component="textarea"
+            element="textarea"
+            name="details"
+            label="details"
+          />
+
         </div>
+
         <button type="submit">Submit</button>
 
       </form>
@@ -35,3 +65,6 @@ export default class Form extends Component {
 }
 
 
+export default reduxForm({
+  form:'complaints'
+})(Form)

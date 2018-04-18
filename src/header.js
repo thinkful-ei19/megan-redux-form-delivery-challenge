@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Display () {
     return (
-        <div class="header">
+        <div className="header">
             <header>
                 <h1>
                 Report a problem with your delivery
