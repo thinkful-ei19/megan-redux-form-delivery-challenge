@@ -1,42 +1,52 @@
 import React, { Component } from 'react';
 import {reduxForm, Field} from 'redux-form';
 import {required, notEmpty, fiveCharOnly, onlyNumbers} from './validators';
+import InputComponent from './input';
 
 export class Form extends Component {
+
+
+
+
+  
   render() {
+
+    let successMessage;
+    if(this.props.submitSucceeded === true){
+      successMessage=
+      <div className="success-message">Report Submitted Successfully</div>
+    }
+
+
+    let errorMessage;
+    if(this.props.error){
+      errorMessage = 
+      <div className="error-message">{this.props.error}</div>
+    }
+
     return (
       <form
         onSubmit={this.props.handleSubmit(values =>{
           console.log(values)
-          .catch(err=> console.log(err))
-        }
+            }
           )
         }
       >
-        
-          Tracking Number
-          <br />
+        {successMessage}
+        {errorMessage}
 
           <Field 
-            component="input"
+            component={InputComponent}
             element="input"
-            name="tracking-number"
-            label="tracking-number"
-            id="tracking-number"
+            name="Tracking Number"
             validate= {[required, notEmpty, fiveCharOnly, onlyNumbers]}
           />
         
 
-        <div>
-        What is your issue?
-          <br/>
-
           <Field 
-            component="select" 
+            component={InputComponent} 
             element="select"
-            name="issue-description" 
-            id="issue"
-            label="issue"
+            name="Issue Description" 
           >
             <option></option>
             <option name="not-arrived">My delivery hasn't arrived</option>
@@ -46,20 +56,12 @@ export class Form extends Component {
             <option name="other">Other(give details below)</option>
           </Field>
 
-        </div>
-          
-        <div>
-          Give more details (optional)
-          <br />
-
           <Field
-            component="textarea"
+            component={InputComponent}
             element="textarea"
-            name="details"
-            label="details"
+            name="Give More Details(optional)"
           />
 
-        </div>
 
         <button type="submit">Submit</button>
 
